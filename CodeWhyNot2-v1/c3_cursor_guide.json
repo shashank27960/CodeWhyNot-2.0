@@ -1,0 +1,147 @@
+{
+  "project_overview": {
+    "title": "Causal Code Counterfactuals (C3)",
+    "description": "A 4-week internship project implementing causal-aware code generation with domain-specific evaluation metrics",
+    "core_novelty": [
+      "Seed replay mechanism for generating true counterfactuals",
+      "AST edit distance for structural code comparison",
+      "Functional correctness testing for logical evaluation"
+    ],
+    "end_goal": "Interactive tool that generates factual/counterfactual code pairs with automated evaluation and analysis"
+  },
+  
+  "project_structure": {
+    "root_directory": "C3_Project/",
+    "subdirectories": {
+      "c3_core/": "Core implementation modules",
+      "data/": "Experimental results and datasets",
+      "notebooks/": "Jupyter/Colab notebooks",
+      "tests/": "Unit tests and validation",
+      "docs/": "Documentation and paper drafts"
+    },
+    "key_files": {
+      "main.py": "Main application entry point",
+      "causal_generator.py": "Core causal generation logic",
+      "evaluator.py": "AST and functional evaluation metrics",
+      "prompts.py": "Prompt templates and test cases",
+      "ui_components.py": "Interactive UI elements",
+      "requirements.txt": "Python dependencies"
+    }
+  },
+  
+  "week_by_week_implementation": {
+    "week_1": {
+      "goal": "Foundational Scaffolding & Baseline Generation",
+      "cursor_prompt": "I'm implementing a research project called 'Causal Code Counterfactuals (C3)' for a 4-week internship. This week focuses on building the foundation. Please help me:\n\n1. Set up the project structure with directories: C3_Project/, c3_core/, data/, notebooks/, tests/, docs/\n2. Create a requirements.txt with: transformers, torch, ipywidgets, streamlit, pandas, matplotlib, seaborn, ast, zss\n3. Build a basic UI using either Streamlit or ipywidgets with:\n   - Dropdown for problem selection (factorial, fibonacci, sum)\n   - Generate button\n   - Two code output areas (factual and counterfactual)\n   - Metrics display section\n4. Implement standard code generation using deepseek-coder-1.3b-instruct model\n5. Create a simple function that takes a prompt and returns generated code using model.generate()\n\nThis is the baseline (non-causal) implementation. The counterfactual side will be empty for now. Focus on getting a working app that can generate code for given prompts.",
+      "deliverables": [
+        "Working project structure",
+        "Functional UI with basic code generation",
+        "Standard (non-causal) baseline implementation"
+      ]
+    },
+    
+    "week_2": {
+      "goal": "The Causal Core - Implementing the Noise Replay Mechanism",
+      "cursor_prompt": "This is Week 2 of the C3 project - implementing the core technical novelty. I need to build the seed replay mechanism for generating true counterfactuals. Please help me:\n\n1. Refactor the generation to be token-by-token instead of using model.generate()\n2. Create a loop that generates output one token at a time, manually getting logits\n3. Implement the CRITICAL seed replay algorithm:\n   - Function: _generate_single_version(prompt, master_seed)\n   - KEY LINE: Inside the token loop, call torch.manual_seed(master_seed + step_index) before sampling\n   - This ensures identical pseudo-random choices at each step for both factual and counterfactual runs\n4. Build generate_causal_pair(factual_prompt, cf_prompt, master_seed) that calls _generate_single_version twice with the same master_seed\n5. Integrate into UI so button calls generate_causal_pair() and displays both outputs\n\nThis is the most important technical contribution - the seed replay mechanism that enables true causal counterfactuals in code generation.",
+      "deliverables": [
+        "Token-by-token generation implementation",
+        "Seed replay algorithm (core novelty)",
+        "Causal pair generator function",
+        "Integrated UI with counterfactual generation"
+      ]
+    },
+    
+    "week_3": {
+      "goal": "The Measurement Engine - Domain-Specific Evaluation",
+      "cursor_prompt": "Week 3 of C3 project - implementing domain-specific evaluation metrics. This is the second pillar of novelty. Please help me:\n\n1. Implement AST Edit Distance (Novel Metric 1):\n   - Use Python's ast library to parse code into Abstract Syntax Trees\n   - Use zss library for Zhang-Shasha tree edit distance\n   - Function: calculate_ast_distance(code1, code2)\n   - This quantifies structural differences between programs\n\n2. Implement Functional Correctness Testing (Novel Metric 2):\n   - Create unit_test strings with assert statements for each problem\n   - Function: run_functional_test(generated_code, unit_test_code)\n   - Use try/except around exec() to run code and tests together\n   - Catch AssertionError and other exceptions\n   - This evaluates logical correctness\n\n3. Full Integration:\n   - After generating causal pair, call both evaluation functions\n   - Display AST distance scores and Pass/Fail status in UI\n   - Use color coding and icons (✅/❌) for clear results\n\nThis provides meaningful, domain-specific evaluation beyond simple text comparison.",
+      "deliverables": [
+        "AST edit distance implementation",
+        "Functional correctness testing",
+        "Complete evaluation pipeline",
+        "Enhanced UI with metrics display"
+      ]
+    },
+    
+    "week_4": {
+      "goal": "Experimentation, Analysis, and Publication",
+      "cursor_prompt": "Final week of C3 project - experimentation and paper writing. Please help me:\n\n1. Design and Run Experiment:\n   - Protocol: For each problem (factorial, fibonacci, sum), run with 10 different master seeds\n   - Create automation script that calls functions and logs results to CSV\n   - Capture: prompts, generated codes, AST distances, correctness status\n\n2. Analyze and Visualize Results:\n   - Use pandas to load results into DataFrame\n   - Calculate statistics: mean/std-dev of AST distance per problem, success rates\n   - Create visualizations with matplotlib/seaborn: bar chart of 'Average AST Distance by Problem'\n\n3. Write Paper Draft:\n   - Structure: Abstract, Introduction, Related Work, Methodology, Results, Conclusion\n   - Focus on contributions: 1) interactive tool, 2) causal-aware code generation, 3) domain-specific metrics\n   - Include methodology describing seed replay and AST/functional evaluation\n\n4. Final Presentation:\n   - 5-10 slides summarizing the project\n   - Clean, well-commented code\n   - Runnable notebook from top to bottom\n\nThis completes the research project with experimental validation and academic paper.",
+      "deliverables": [
+        "Experimental protocol and automation",
+        "Data analysis and visualizations",
+        "Research paper draft",
+        "Final presentation and clean codebase"
+      ]
+    }
+  },
+  
+  "technical_specifications": {
+    "model_config": {
+      "model_name": "deepseek-coder-1.3b-instruct",
+      "library": "transformers",
+      "generation_method": "token-by-token with manual seed control"
+    },
+    "core_algorithm": {
+      "seed_replay_mechanism": {
+        "function": "_generate_single_version(prompt, master_seed)",
+        "key_line": "torch.manual_seed(master_seed + step_index)",
+        "purpose": "Ensures identical pseudo-random choices for causal counterfactuals"
+      }
+    },
+    "evaluation_metrics": {
+      "ast_edit_distance": {
+        "library": "ast, zss",
+        "method": "Zhang-Shasha tree edit distance",
+        "purpose": "Quantify structural code differences"
+      },
+      "functional_correctness": {
+        "method": "exec() with try/except",
+        "tests": "assert statements for each problem",
+        "purpose": "Evaluate logical correctness"
+      }
+    }
+  },
+  
+  "problem_domains": {
+    "factorial": {
+      "prompt": "Write a Python function to calculate factorial of a number",
+      "unit_test": "assert factorial(5) == 120; assert factorial(0) == 1"
+    },
+    "fibonacci": {
+      "prompt": "Write a Python function to calculate fibonacci number",
+      "unit_test": "assert fibonacci(5) == 5; assert fibonacci(0) == 0"
+    },
+    "sum": {
+      "prompt": "Write a Python function to sum numbers in a list",
+      "unit_test": "assert sum_list([1,2,3]) == 6; assert sum_list([]) == 0"
+    }
+  },
+  
+  "cursor_ai_master_prompt": "I'm implementing a research project called 'Causal Code Counterfactuals (C3)' - a 4-week internship project that builds an interactive tool for generating factual/counterfactual code pairs with domain-specific evaluation.\n\nCORE TECHNICAL NOVELTY:\n1. Seed Replay Mechanism: Uses torch.manual_seed(master_seed + step_index) during token-by-token generation to ensure identical pseudo-random choices, enabling true causal counterfactuals\n2. AST Edit Distance: Quantifies structural code differences using Zhang-Shasha tree edit distance on Abstract Syntax Trees\n3. Functional Correctness Testing: Evaluates logical correctness using exec() with unit tests\n\nPROJECT STRUCTURE:\n- Interactive UI (Streamlit/ipywidgets) with problem selection, generation button, dual code outputs, metrics display\n- Token-by-token generation with deepseek-coder-1.3b-instruct model\n- Causal pair generation using seed replay\n- Automated evaluation with AST distance and functional testing\n- Experimental pipeline for data collection and analysis\n\nIMPLEMENTATION APPROACH:\nWeek 1: Build baseline UI and standard generation\nWeek 2: Implement seed replay mechanism (core novelty)\nWeek 3: Add AST and functional evaluation metrics\nWeek 4: Run experiments, analyze results, write paper\n\nPlease help me implement this step by step, focusing on the technical novelty of the seed replay mechanism and domain-specific evaluation metrics. The goal is to create a complete research tool that demonstrates causal-aware code generation with meaningful evaluation.",
+  
+  "dependencies": {
+    "python_packages": [
+      "transformers>=4.30.0",
+      "torch>=2.0.0",
+      "ipywidgets>=8.0.0",
+      "streamlit>=1.20.0",
+      "pandas>=1.5.0",
+      "matplotlib>=3.5.0",
+      "seaborn>=0.11.0",
+      "zss>=1.2.0",
+      "numpy>=1.21.0",
+      "jupyter>=1.0.0"
+    ],
+    "system_requirements": [
+      "Python 3.8+",
+      "GPU recommended for model inference",
+      "8GB+ RAM for model loading"
+    ]
+  },
+  
+  "validation_criteria": {
+    "week_1": "Working UI that generates code for given prompts",
+    "week_2": "Functional causal pair generation with seed replay",
+    "week_3": "Complete evaluation pipeline with AST and functional metrics",
+    "week_4": "Experimental results, analysis, and paper draft"
+  }
+}

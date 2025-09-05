@@ -1,0 +1,68 @@
+{
+  "settings": {
+    "default_provider": "local",
+    "cache_ttl_seconds": 300,
+    "enable_metrics": true,
+    "enable_logging": true,
+    "environment": "development"
+  },
+  "flags": [
+    {
+      "name": "enable_enhanced_fidelity",
+      "description": "Enable enhanced fidelity scoring with AST-level analysis",
+      "enabled": true,
+      "rollout_percentage": 100.0,
+      "target_environments": [
+        "development",
+        "staging",
+        "production"
+      ],
+      "metadata": {
+        "category": "fidelity",
+        "priority": "high"
+      }
+    },
+    {
+      "name": "enable_advanced_counterfactuals",
+      "description": "Enable advanced counterfactual generation strategies",
+      "enabled": true,
+      "rollout_percentage": 50.0,
+      "target_environments": [
+        "development",
+        "staging"
+      ],
+      "metadata": {
+        "category": "counterfactuals",
+        "priority": "medium"
+      }
+    },
+    {
+      "name": "enable_interactive_visualization",
+      "description": "Enable interactive visualization features",
+      "enabled": true,
+      "rollout_percentage": 100.0,
+      "target_environments": [
+        "development",
+        "staging",
+        "production"
+      ],
+      "metadata": {
+        "category": "ui",
+        "priority": "high"
+      }
+    },
+    {
+      "name": "enable_ml_counterfactuals",
+      "description": "Enable ML-based counterfactual generation",
+      "enabled": false,
+      "rollout_percentage": 0.0,
+      "target_environments": [
+        "development"
+      ],
+      "metadata": {
+        "category": "ml",
+        "priority": "low"
+      }
+    }
+  ]
+}

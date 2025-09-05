@@ -1,0 +1,11 @@
+streamlit
+networkx
+transformers
+code-diff
+streamlit-agraph
+numpy
+requests
+ollama
+matplotlib
+seaborn
+pandas 
